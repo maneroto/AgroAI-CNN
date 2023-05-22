@@ -1,0 +1,17 @@
+*.log
+*.pot
+*.pyc
+*.h5
+__pycache__/
+local_settings.py
+data/
+PlantVillage/
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
