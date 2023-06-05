@@ -73,13 +73,45 @@ I structured the training in a modular way, where each function has a very speci
 
 Moreover, because of the config files, it is easy to choose different training options without making too many changes. The user just needs to set the required attributes inside the `settings.py` file. This results in an easy way to modify parameters such as epochs, steps per epoch and batch sizes.
 
+![Example of training run](./readme_images/first_training_run_part_1.png)
+Figure 9. Example of training run
+
 The data generators function normalizes the data and creates more images for the training by using data augmentation techniques, where the images are rotated, shifted, zoomed and flipped. You may wonder why adding more images to this big dataset, but the reason is that the provided images have no transformations and when taking photos of leaves in the real world you cannot control the environment as much as how the pictures were taken, so I wanted to add some noise.
 
+![Example of training run](./readme_images/first_training_run_part_2.png)
+Figure 10. Example of training run
+
 The training function just takes the required parameters and starts training the model, returning the resulting history. That history is then passed to the plotting function that plots the loss and accuracy obtained along the epochs.
+
+![Example of training graphs](./readme_images/first_training_graphs.png)
+Figure 11. Example of training graphs
 
 After all the training and plotting is done, we need to evaluate the model capabilities, so I tried to make an automated evaluation by using the different datasets: testing, validation and training. The evaluate function applies the keras model.evaluate built-in function and then sets the resulting score, which will be used later.
 
 After all the training and evaluation has been done, there is just left to save the model. For that, I wanted to have a way to distinguish between the different trained models and automate the naming, so I used the obtained score and the given model name to do so. I also needed to store the classes for the predictions, so I did that by saving them inside a csv file.
+
+![Example of training run result](./readme_images/first_training_run_result.png)
+Figure 12. Example of training run result
+
+### Making predictions
+
+For this project, I wanted to make predictions of plant diseases from images using the trained model from the previous step. The main challenge here was to implement everything related to the predictions in a way that it was easy to interact with those functions from a web server. Therefore, I tried to isolate all the functionalities and create two different ways to interact with the prediction system: from the web server and by executing a console call.
+
+The predictions use the trained model that was saved after the training process. To use the model, we need to configure it from the settings.py file in the config folder by setting the name of the model that we want to use for the predictions.
+
+We also need to normalize the provided image, regardless of whether the image was provided from an HTTP method or given through the main function’s image path. Normalizing the image means scaling its pixel values to a range between 0 and 1, which is what the model expects as input. We also need to load the classes that were saved in a csv file after the training process, so that when the prediction is done we can see the actual class name instead of just the index number.
+
+![Example of prediction](./readme_images/prediction_example.png)
+Figure 13. Example of prediction
+
+### Mapping all predictions into a web server
+
+I wanted to use a light-weight web server that could handle the AI requirements without compromising the performance. That's why I chose Flask, which is a light-weight server that offers everything that is needed to set up a small web application.
+
+I just installed Flask and created a basic application that listens to the root path and renders a simple page. The application also waits for the POST method to be triggered on the "predict/" path, which calls the prediction functions that I created before. That is pretty much all there is to it.
+
+![Example of web prediction](./readme_images/web_prediction_example.png)
+Figure 14. Example of web prediction
 
 ### Installation and usage
 
@@ -155,3 +187,5 @@ flask run --host=0.0.0.0
 - Diamond, J. (2002). Evolution, consequences and future of plant and animal domestication. Nature, 418(6898), 700-707. https://doi.org/10.1038/nature01019
 
 - Hughes, D. P., & Salathé, M. (2015). An open access repository of images on plant health to enable the development of mobile disease diagnostics. arXiv. https://arxiv.org/ftp/arxiv/papers/1511/1511.08060.pdf
+
+- https://www.kaggle.com/datasets/abdallahalidev/plantvillage-dataset
