@@ -2,6 +2,7 @@ import os
 import time
 import shutil
 import dotenv
+import importlib
 from kaggle.api import authenticate as kaggleAuth, authenticate_from_env as kaggleAuthEnv
 from sklearn.model_selection import train_test_split
 
@@ -9,10 +10,12 @@ from config.settings import *
 
 def authenticate():
   try:
-    kaggleAuth()
+    kaggle = importlib.import_module('kaggle')
+    kaggle.api.authenticate()
   except Exception as _:
     dotenv.load_dotenv()
-    kaggleAuthEnv()
+    kaggle = importlib.import_module('kaggle')
+    kaggle.api.authenticate_from_env()
 
 def create_dataset_folders():
   print('Setting dataset folders...')
