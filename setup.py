@@ -14,7 +14,7 @@ def authenticate():
   except Exception as _:
     dotenv.load_dotenv()
     kaggle = importlib.import_module('kaggle')
-    kaggle.api.authenticate_from_env()
+    kaggle.api.read_config_environment()
 
 def create_dataset_folders():
   print('Setting dataset folders...')
