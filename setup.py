@@ -11,10 +11,12 @@ def authenticate():
   try:
     kaggle = importlib.import_module('kaggle')
     kaggle.api.authenticate()
+    return kaggle
   except Exception as _:
     dotenv.load_dotenv()
     kaggle = importlib.import_module('kaggle')
     kaggle.api.read_config_environment()
+    return kaggle
 
 def create_dataset_folders():
   print('Setting dataset folders...')
@@ -34,7 +36,7 @@ def create_dataset_folder_info(dataset, folder_dir, folder_name):
     os.makedirs(os.path.join(folder_dir, class_folder), exist_ok=True)
     shutil.copy(os.path.join(DATASET_TMP_DIR, file), os.path.join(folder_dir, file))
 
-def load_image_dataset():
+def load_image_dataset(kaggle):
   files = []
 
   if not os.path.exists(DATASET_TMP_DIR):
@@ -65,8 +67,8 @@ def main():
   print("Starting files setup...")
   start_time = time.time()
 
-  authenticate()
-  load_image_dataset()
+  kaggle = authenticate()
+  load_image_dataset(kaggle)
 
   end_time = time.time()
   total_time = end_time - start_time
