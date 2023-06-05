@@ -1,4 +1,5 @@
 import os
+import time
 import kaggle
 import shutil
 import dotenv
@@ -49,8 +50,8 @@ def load_image_dataset():
     for file in os.listdir(os.path.join(DATASET_TMP_DIR, folder)):
       files.append(os.path.join(folder, file))
 
-  train_files, test_files = train_test_split(files, test_size=0.2, random_state=DATASET_RANDOM_SEED)
-  train_files, validate_files = train_test_split(train_files, test_size=0.2, random_state=DATASET_RANDOM_SEED)
+  train_files, test_files = train_test_split(files, test_size=0.2, shuffle=True, random_state=DATASET_RANDOM_SEED)
+  validate_files, test_files = train_test_split(test_files, test_size=0.5, shuffle=True, random_state=DATASET_RANDOM_SEED)
 
   create_dataset_folders()
 
@@ -58,5 +59,17 @@ def load_image_dataset():
   create_dataset_folder_info(test_files, TEST_URL, "testing")
   create_dataset_folder_info(validate_files, VALIDATE_URL, "validation")
 
-authenticate()
-load_image_dataset()
+def main():
+  print("Starting files setup...")
+  start_time = time.time()
+
+  authenticate()
+  load_image_dataset()
+
+  end_time = time.time()
+  total_time = end_time - start_time
+
+  print(f"Process has finished in {total_time} seconds.")
+
+if __name__ == "__main__":
+  main()
