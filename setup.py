@@ -8,13 +8,8 @@ from sklearn.model_selection import train_test_split
 from config.settings import *
 
 def authenticate():
-  try:
-    kaggle = importlib.import_module('kaggle')
-    kaggle.api.authenticate()
-  except Exception as _:
-    dotenv.load_dotenv()
-    kaggle = importlib.import_module('kaggle')
-    kaggle.api.read_config_environment()
+  kaggle = importlib.import_module('kaggle')
+  kaggle.api.authenticate()
 
 def create_dataset_folders():
   print('Setting dataset folders...')
