@@ -3,7 +3,6 @@ import time
 import shutil
 import dotenv
 import importlib
-from kaggle.api import authenticate as kaggleAuth, authenticate_from_env as kaggleAuthEnv
 from sklearn.model_selection import train_test_split
 
 from config.settings import *
