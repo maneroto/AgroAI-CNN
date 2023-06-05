@@ -71,7 +71,7 @@ One of the main challenges for the training was that I wanted to be able to appl
 
 I structured the training in a modular way, where each function has a very specific task and it is easy to fix errors if they occur. I also followed the DRY (Don’t Repeat Yourself) principle and wrote efficient code.
 
-Moreover, because of the config files, it is easy to choose different training options without making too many changes. The user just needs to set the required attributes inside the settings.py file. This results in an easy way to modify parameters such as epochs, steps per epoch and batch sizes.
+Moreover, because of the config files, it is easy to choose different training options without making too many changes. The user just needs to set the required attributes inside the `settings.py` file. This results in an easy way to modify parameters such as epochs, steps per epoch and batch sizes.
 
 The data generators function normalizes the data and creates more images for the training by using data augmentation techniques, where the images are rotated, shifted, zoomed and flipped. You may wonder why adding more images to this big dataset, but the reason is that the provided images have no transformations and when taking photos of leaves in the real world you cannot control the environment as much as how the pictures were taken, so I wanted to add some noise.
 
@@ -80,6 +80,65 @@ The training function just takes the required parameters and starts training the
 After all the training and plotting is done, we need to evaluate the model capabilities, so I tried to make an automated evaluation by using the different datasets: testing, validation and training. The evaluate function applies the keras model.evaluate built-in function and then sets the resulting score, which will be used later.
 
 After all the training and evaluation has been done, there is just left to save the model. For that, I wanted to have a way to distinguish between the different trained models and automate the naming, so I used the obtained score and the given model name to do so. I also needed to store the classes for the predictions, so I did that by saving them inside a csv file.
+
+### Installation and usage
+
+To create your own copy of the AI model and run it on your device, you need to install python 3.11 distribution and clone this repository by executing
+
+```
+git clone https://github.com/maneroto/agro-ai
+```
+
+After doing that, navigate to the created folder on your current folder.
+
+```
+cd ./agro-ai
+```
+
+We recommend you to create and execute a virtual environment by running
+
+```
+python -m venv env
+./env/Scripts/activate
+```
+
+Then you need to install the requirements by executing
+
+```
+pip install -r requirements.txt
+```
+
+Now you can interact with the files corresponding to the AI model and the web server, here you have some useful commands:
+
+Run the folders and data setup:
+
+```
+python setup.py
+```
+
+Run the model training process:
+
+```
+python train.py
+```
+
+Run predictions from the console, the predicted image must be provided inside the `main` method of the `predict.py` file:
+
+```
+python predict.py
+```
+
+Run the web server application on your PC:
+
+```
+flask run
+```
+
+If you want to acces your web server from a local network, then you need to execute
+
+```
+flask run --host=0.0.0.0
+```
 
 ## References
 
