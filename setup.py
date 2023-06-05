@@ -10,7 +10,7 @@ from config.settings import *
 def authenticate():
   try:
     kaggle.api.authenticate()
-  except:
+  except Exception as _:
     dotenv.load_dotenv()
     kaggle.api.authenticate_from_env()
 
